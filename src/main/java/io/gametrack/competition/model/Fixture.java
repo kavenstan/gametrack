@@ -1,46 +1,81 @@
 package io.gametrack.competition.model;
 
-import java.util.Date;
+import io.gametrack.competition.model.enums.ContestState;
+import io.gametrack.entrant.Entrant;
+import io.gametrack.score.model.FixtureScore;
+import io.gametrack.score.model.MatchScore;
+import io.gametrack.score.model.Score;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kevin Sutton
  */
-public class Fixture {
-    private Entrant entrantOne;
-    private Entrant entrantTwo;
-    private GameState state = GameState.SCHEDULED;
-    private Entrant winner;
-    private Date scheduledFor;
+public class Fixture extends Contest {
 
-    public Entrant getEntrantOne() {
-        return entrantOne;
+    private FixtureType fixtureType;
+
+    public FixtureType getFixtureType() {
+        return fixtureType;
     }
 
-    public void setEntrantOne(Entrant entrantOne) {
-        this.entrantOne = entrantOne;
+    public void setFixtureType(FixtureType fixtureType) {
+        this.fixtureType = fixtureType;
     }
 
-    public Entrant getEntrantTwo() {
-        return entrantTwo;
+    @Override
+    public void updateScores() {
+        for (Entrant entrant : getEntrants()) {
+            setScore(entrant, calculateScore(entrant));
+        }
+        checkConditions();
     }
 
-    public void setEntrantTwo(Entrant entrantTwo) {
-        this.entrantTwo = entrantTwo;
+    @Override
+    public Score calculateScore(Entrant entrant) {
+        int matchesWon = (int) children.stream()
+                .filter(m -> m.getState().getStateType().equals(ContestState.StateType.COMPLETE)
+                        && m.getWinner() != null
+                        && entrant.getPlayers().containsAll(m.getWinner().getPlayers()))
+                .count();
+
+        Score fixtureScore = new FixtureScore();
+        fixtureScore.setValue(matchesWon);
+        return fixtureScore;
     }
 
-    public Entrant getWinner() {
-        return winner;
+    @Override
+    public void checkConditions() {
+        Optional<Contest> notWon = children.stream()
+                .filter(g -> !g.getState().getStateType().equals(ContestState.StateType.COMPLETE))
+                .findAny();
+
+        Entrant entrantOne = getEntrants().get(0);
+        Entrant entrantTwo = getEntrants().get(1);
+
+        int scoreOne = getScore(entrantOne).getValue();
+        int scoreTwo = getScore(entrantTwo).getValue();
+
+        if (!notWon.isPresent()) {
+
+            if (scoreOne != scoreTwo) {
+                setState(ContestState.WON);
+                if (scoreOne > scoreTwo) {
+                    setWinner(entrantOne);
+                }
+                else if (scoreOne < scoreTwo) {
+                    setWinner(entrantTwo);
+                }
+            }
+            else {
+                setState(ContestState.DRAWN);
+            }
+            logger.info("Fixture [{}] is complete", this);
+        }
     }
 
-    public void setWinner(Entrant winner) {
-        this.winner = winner;
-    }
 
-    public Date getScheduledFor() {
-        return scheduledFor;
-    }
 
-    public void setScheduledFor(Date scheduledFor) {
-        this.scheduledFor = scheduledFor;
-    }
 }

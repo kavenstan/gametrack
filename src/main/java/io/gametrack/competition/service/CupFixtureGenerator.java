@@ -1,11 +1,15 @@
 package io.gametrack.competition.service;
 
-import io.gametrack.competition.model.Entrant;
+import io.gametrack.competition.model.Contest;
 import io.gametrack.competition.model.Fixture;
+import io.gametrack.entrant.Entrant;
+import io.gametrack.score.model.FixtureScore;
+import io.gametrack.score.model.Score;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -14,12 +18,14 @@ import java.util.Random;
 public class CupFixtureGenerator implements FixtureGenerator {
 
     private Random randomGenerator;
+    private List<Entrant> entrants;
 
-    public CupFixtureGenerator() {
+    public CupFixtureGenerator(List<Entrant> entrants) {
         randomGenerator = new Random();
+        this.entrants = entrants;
     }
 
-    public List<Fixture> generateFixtures(List<Entrant> entrants) {
+    public List<Fixture> generateFixtures() {
 
         List<Fixture> fixtures = new ArrayList<>();
 
@@ -30,8 +36,10 @@ public class CupFixtureGenerator implements FixtureGenerator {
         for (int i = 0; i < fixturesToPlayInFirstRound; i++) {
             Fixture fixture = new Fixture();
 
-            fixture.setEntrantOne(pickRandomEntrant(entrants));
-            fixture.setEntrantTwo(pickRandomEntrant(entrants));
+            Map<Entrant, Score> scoreMap = new HashMap<>();
+            scoreMap.put(pickRandomEntrant(entrants), new FixtureScore());
+            scoreMap.put(pickRandomEntrant(entrants), new FixtureScore());
+            fixture.setScores(scoreMap);
 
             fixtures.add(fixture);
         }

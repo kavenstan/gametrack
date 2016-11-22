@@ -1,3 +1,6 @@
 .idea/
 .DS_Store
 gametrack.iml
+.gradle/
+build/
+out/

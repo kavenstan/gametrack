@@ -1,5 +1,7 @@
 package io.gametrack.competition.model;
 
+import io.gametrack.entrant.Entrant;
+
 import java.util.List;
 
 /**
@@ -7,10 +9,9 @@ import java.util.List;
  *
  * @author Kevin Sutton
  */
-public abstract class Tournament {
+public class Tournament {
     protected List<Entrant> entrants;
 
-    public abstract Entrant getWinner();
 
     final public void addEntrant(final Entrant entrant) {
         entrants.add(entrant);

@@ -2,7 +2,7 @@ package io.gametrack.competition.service;
 
 import io.gametrack.competition.model.League;
 import io.gametrack.competition.model.LeagueGroup;
-import io.gametrack.competition.model.LeagueScore;
+import io.gametrack.score.model.LeagueScore;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class LeaguePrinter {
     public LeaguePrinter(League league) {
         this.league = league;
     }
+/*
 
     public void print() {
         System.out.println("League: " + league.getName());
@@ -34,14 +35,15 @@ public class LeaguePrinter {
             for(LeagueScore score : standings) {
                 System.out.println(
                         leftPad(score.getEntrant().getName(), 10)  +
-                        leftPad(LeagueScoreService.leaguePoints(score) , 4) +
-                        leftPad(LeagueScoreService.matchesWon(score) , 4) +
-                        leftPad(LeagueScoreService.gamesWon(score) , 4) +
-                        leftPad(LeagueScoreService.pointsWon(score), 4) );
+                        leftPad(score.getPoints() , 4) +
+                        leftPad(ScoreService.fixturesWonInLeague(score.getFixtureScores().stream()) , 4) +
+                        leftPad(ScoreService.gamesWon(score) , 4) +
+                        leftPad(ScoreService.pointsWon(score), 4) );
             }
 
         }
     }
+*/
 
     private String leftPad(int in, int size) {
         return leftPad(String.valueOf(in), size);

@@ -1,36 +1,38 @@
 package io.gametrack.competition.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import io.gametrack.entrant.Entrant;
+import io.gametrack.score.model.Score;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Group of entrants in a league.
  *
  * @author Kevin Sutton
  */
-public class LeagueGroup {
+public class LeagueGroup extends Contest {
 
-    private List<LeagueScore> leagueScores = new ArrayList<>();
-    private List<Fixture> fixtures = new ArrayList<>();
+    private static final Logger logger = LogManager.getLogger();
 
-    public List<LeagueScore> getLeagueScores() {
-        return leagueScores;
+    private String name;
+
+    public LeagueGroup(final String name) {
+        logger.info("Creating group [{}]", name);
+        this.name = name;
     }
 
-    public LeagueScore leagueScore(Entrant entrant) {
-        return leagueScores.stream().filter(s -> s.getEntrant().equals(entrant)).findFirst().get();
+    @Override
+    public Score calculateScore(Entrant entrant) {
+        return null;
     }
 
-    public void add(Entrant entrant) {
-        LeagueScore score = new LeagueScore();
-        score.setLeagueGroup(this);
-        score.setEntrant(entrant);
-        leagueScores.add(score);
+    @Override
+    public void updateScores() {
+
     }
 
-    public List<LeagueScore> getStandings() {
-        Collections.sort(leagueScores);
-        return leagueScores;
+    @Override
+    public void checkConditions() {
+
     }
 }
