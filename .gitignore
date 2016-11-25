@@ -4,3 +4,4 @@ gametrack.iml
 .gradle/
 build/
 out/
+all.log

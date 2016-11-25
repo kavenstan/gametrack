@@ -7,13 +7,13 @@ repositories {
 }
 
 jar {
-    baseName = 'gametrack'
+    baseName = 'gametrack2'
     version =  '0.0.1'
 }
 
 test {
     filter {
-        includeTestsMatching "io.gametrack.simulation.LeagueSimulator"
+        includeTestsMatching "io.gametrack2.simulation.LeagueSimulator"
     }
 }
 
