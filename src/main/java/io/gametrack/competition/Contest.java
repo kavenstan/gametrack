@@ -13,15 +13,20 @@ public abstract class Contest {
 
     protected Side sideOne;
     protected Side sideTwo;
+
     protected Date startedAt;
     protected Date endedAt;
 
     protected ContestState state;
+    protected WinConditionEvaluator evaluator;
 
     protected Contest() {
         this.state = ContestState.CREATED;
     }
 
+    public void setWinConditionEvaluator(WinConditionEvaluator evaluator) {
+        this.evaluator = evaluator;
+    }
 
     public ContestState getState() {
         return state;
@@ -62,6 +67,5 @@ public abstract class Contest {
     }
 
     public abstract void incrementScore(Side side);
-    protected abstract boolean winConditionsMet();
 
 }

@@ -2,6 +2,7 @@ package io.gametrack.competition;
 
 import io.gametrack.player.Side;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,19 +11,18 @@ import java.util.Optional;
 public class Match extends Contest {
 
     private Fixture fixture;
+    private List<Game> games;
+
+    public Match() {
+
+    }
+
+    public void setFixture(final Fixture fixture) {
+        this.fixture = fixture;
+    }
 
     public Optional<Fixture> getFixture() {
         return fixture != null ? Optional.of(fixture) : Optional.empty();
-    }
-
-    @Override
-    public void setSideOne(Side sideOne) {
-
-    }
-
-    @Override
-    public void setSideTwo(Side sideTwo) {
-
     }
 
     @Override
@@ -30,8 +30,4 @@ public class Match extends Contest {
 
     }
 
-    @Override
-    protected boolean winConditionsMet() {
-        return false;
-    }
 }

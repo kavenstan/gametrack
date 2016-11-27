@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
         ContestScoreViewTest.class,
-        GameTest.class
+        GameTest.class,
+        WinConditionTest.class
 })
 
 public class CompetitionTestSuite {

@@ -3,9 +3,13 @@ package io.gametrack.competition;
 import io.gametrack.player.MensSingles;
 import io.gametrack.player.Player;
 import io.gametrack.player.Side;
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -20,10 +24,14 @@ public class GameTest {
     private Game game;
     private Side sideOne;
     private Side sideTwo;
+    private WinConditionEvaluator mockEvaluator;
 
     @Before
     public void setUp() {
         this.game = new Game();
+        this.mockEvaluator = EasyMock.createMock(WinConditionEvaluator.class);
+        this.game.setWinConditionEvaluator(mockEvaluator);
+
         Player playerOne = new Player();
         Player playerTwo = new Player();
         this.sideOne = new MensSingles(playerOne);
@@ -33,33 +41,20 @@ public class GameTest {
 
     @Test
     public void testNoPoints() {
-        assertEquals(new int [] {0, 0}, game.scores);
+        assertArrayEquals(new int [] {0, 0}, game.scores);
     }
 
     @Test
     public void testPointProgression() {
+        expect(mockEvaluator.isWon()).andReturn(false).times(2);
+        replay(mockEvaluator);
+
         game.incrementScore(sideOne);
         assertArrayEquals(new int [] {1, 0}, game.scores);
-        addScoresForSide(20, sideOne);
-        assertArrayEquals(new int [] {21, 0}, game.scores);
-    }
+        game.incrementScore(sideTwo);
+        assertArrayEquals(new int [] {1, 1}, game.scores);
 
-    @Test
-    public void testCanNotWinByOne() {
-        addScoresForBoth(20);
-        addScoresForSide(1, sideOne);
-        assertArrayEquals(new int [] {21, 20}, game.scores);
-        assertNotEquals(ContestState.WON, game.getState());
-    }
-
-    @Test
-    public void testWinAtThirty() {
-        addScoresForBoth(29);
-        assertArrayEquals(new int [] {29, 29}, game.scores);
-        assertNotEquals(ContestState.WON, game.getState());
-        addScoresForSide(1, sideOne);
-        assertArrayEquals(new int [] {30, 29}, game.scores);
-        assertEquals(ContestState.WON, game.getState());
+        verify(mockEvaluator);
     }
 
     @Test
@@ -74,25 +69,19 @@ public class GameTest {
     @Test
     public void testEndGame() {
         assertNull(game.getEndedAt());
-        addScoresForSide(10, sideOne);
         game.start();
+
+        expect(mockEvaluator.isWon()).andReturn(false);
+        expect(mockEvaluator.isWon()).andReturn(true);
+        replay(mockEvaluator);
+
+        game.incrementScore(sideOne);
         assertNull(game.getEndedAt());
-        addScoresForSide(11, sideOne);
+
+        game.incrementScore(sideOne);
         assertNotNull(game.getEndedAt());
-    }
 
-
-    private void addScoresForSide(int scoresToAdd, Side side) {
-        for (int i = 0; i < scoresToAdd; i++) {
-            game.incrementScore(side);
-        }
-    }
-
-    private void addScoresForBoth(int scoresToAdd) {
-        for (int i = 0; i < scoresToAdd; i++) {
-            game.incrementScore(sideOne);
-            game.incrementScore(sideTwo);
-        }
+        verify(mockEvaluator);
     }
 
 }
