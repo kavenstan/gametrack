@@ -1,19 +1,28 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+    }
+}
+
 apply plugin: 'idea'
 apply plugin: 'java'
-
+apply plugin: 'org.springframework.boot'
 
 repositories {
     mavenCentral()
 }
 
 jar {
-    baseName = 'gametrack2'
+    baseName = 'gametrack'
     version =  '0.0.1'
 }
 
 test {
     filter {
-        includeTestsMatching "io.gametrack2.simulation.LeagueSimulator"
+        includeTestsMatching "io.gametrack.*.*Test"
     }
 }
 
@@ -21,9 +30,19 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
     compile group: 'org.easymock', name: 'easymock', version: '3.4'
+
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+//    compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    compile group: 'io.projectreactor', name: 'reactor-bus', version: '2.0.7.RELEASE'
+    compile group: 'io.projectreactor.spring', name: 'reactor-spring-context', version: '2.0.7.RELEASE'
+
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("com.h2database:h2")
 
     testCompile "junit:junit:4.11"
 }

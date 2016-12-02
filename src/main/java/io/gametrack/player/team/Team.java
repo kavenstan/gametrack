@@ -1,35 +1,44 @@
 package io.gametrack.player.team;
 
-import io.gametrack.player.Entrant;
+import io.gametrack.core.model.BaseEntity;
 import io.gametrack.player.Player;
 
-import java.util.ArrayList;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kevin Sutton
  */
-public abstract class Team implements Entrant {
+@Entity
+public class Team extends BaseEntity {
 
-    protected Player captain;
-    protected List<Player> players;
+    @ManyToOne
+    @JoinColumn(name="id_game")
+    private Player captain;
 
-    protected Team() {
-        players = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name="team_player", joinColumns = @JoinColumn(name="id_team"), inverseJoinColumns=@JoinColumn(name="id_player"))
+    private Set<Player> players;
+
+    public Team() {
+        players = new HashSet<>();
     }
 
-    @Override
     public void addPlayer(Player player) {
-        if (players.size() >= getTeamSize()) {
-            throw new RuntimeException("Can not add another player - Max team size reached");
-        }
         players.add(player);
     }
 
-    @Override
-    public List<Player> getPlayers() {
-        return Collections.unmodifiableList(players);
+    public Set<Player> getPlayers() {
+        return Collections.unmodifiableSet(players);
     }
 
     public void setPlayers(List<Player> players) {
@@ -44,6 +53,5 @@ public abstract class Team implements Entrant {
         this.captain = captain;
     }
 
-    protected abstract int getTeamSize();
 
 }
