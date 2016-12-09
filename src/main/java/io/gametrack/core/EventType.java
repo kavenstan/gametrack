@@ -5,6 +5,5 @@ package io.gametrack.core;
  */
 public enum EventType {
     GAME_SCORE_CHANGE,
-    GAME_STATE_CHANGE,
-    GAME_WINNER_CHANGE
+    GAME_STATE_CHANGE
 }

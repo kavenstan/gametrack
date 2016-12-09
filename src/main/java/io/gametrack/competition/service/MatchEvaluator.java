@@ -1,9 +1,6 @@
 package io.gametrack.competition.service;
 
-import io.gametrack.GametrackException;
-import io.gametrack.GametrackExceptionType;
 import io.gametrack.competition.domain.entity.Match;
-import io.gametrack.competition.domain.entity.Score;
 import io.gametrack.player.Side;
 
 import java.util.Optional;
@@ -20,6 +17,16 @@ public class MatchEvaluator implements ContestEvaluator {
     }
 
     @Override
+    public boolean isDraw() {
+        return false;
+    }
+
+    @Override
+    public Optional<Side> winner() {
+        return null;
+    }
+
+/*    @Override
     public boolean isDraw() {
         if (!match.getRules().drawAllowed()) {
             return false;
@@ -55,7 +62,7 @@ public class MatchEvaluator implements ContestEvaluator {
                 ? scoreOne.getSide()
                 : scoreTwo.getSide()
         );
-    }
+    }*/
 
 
 }

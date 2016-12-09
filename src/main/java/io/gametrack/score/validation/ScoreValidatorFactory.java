@@ -9,7 +9,7 @@ import io.gametrack.competition.domain.entity.Contest;
  */
 public class ScoreValidatorFactory {
     public static ScoreValidator getScoreValidator(Contest contest) {
-        switch (contest.getScoreSystem()) {
+        switch (contest.getScoreSystemType()) {
             case GAME_WITH_SETTING:
                 return new GameSettingScoreValidator();
             case GAME_NO_SETTING:

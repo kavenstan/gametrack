@@ -1,10 +1,11 @@
 package io.gametrack.competition.domain.entity;
 
 import io.gametrack.competition.domain.ContestState;
-import io.gametrack.competition.domain.ScoreSystem;
+import io.gametrack.competition.domain.ScoreSystemType;
 import io.gametrack.core.model.BaseEntity;
 import io.gametrack.player.Side;
 import io.gametrack.score.ScorePair;
+import io.gametrack.score.domain.entity.Score;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -35,9 +36,11 @@ public abstract class Contest extends BaseEntity {
     protected ContestState state;
 
     @Enumerated(EnumType.STRING)
-    protected ScoreSystem scoreSystem;
+    protected ScoreSystemType scoreSystemType;
 
-    protected Contest() { }
+    protected Contest() {
+        this.state = ContestState.CREATED;
+    }
 
     public Optional<Side> getWinner() {
         return winner != null ? Optional.of(winner) : Optional.empty();
@@ -63,12 +66,8 @@ public abstract class Contest extends BaseEntity {
         this.state = state;
     }
 
-    public ScoreSystem getScoreSystem() {
-        return scoreSystem;
-    }
-
-    public void setScoreSystem(ScoreSystem scoreSystem) {
-        this.scoreSystem = scoreSystem;
+    public ScoreSystemType getScoreSystemType() {
+        return scoreSystemType;
     }
 
     protected abstract void setScore(final int side, final int newValue);

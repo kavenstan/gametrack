@@ -1,5 +1,6 @@
-package io.gametrack.competition.domain.entity;
+package io.gametrack.score.domain.entity;
 
+import io.gametrack.competition.domain.entity.Game;
 import io.gametrack.player.Side;
 
 import javax.persistence.Entity;
@@ -17,6 +18,10 @@ public class GameScore extends Score {
     @ManyToOne
     @JoinColumn(name="id_game")
     private Game game;
+
+    protected GameScore() {
+
+    }
 
     public GameScore(Side side) {
         super(side);

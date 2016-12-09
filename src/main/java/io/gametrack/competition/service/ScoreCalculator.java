@@ -1,7 +1,7 @@
 package io.gametrack.competition.service;
 
 import io.gametrack.competition.domain.entity.Match;
-import io.gametrack.competition.domain.entity.Score;
+import io.gametrack.score.domain.entity.Score;
 import io.gametrack.player.Side;
 
 /**

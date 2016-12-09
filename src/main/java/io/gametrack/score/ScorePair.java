@@ -19,4 +19,23 @@ public class ScorePair {
     public int getScoreTwo() {
         return scoreTwo;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ScorePair)) return false;
+
+        ScorePair scorePair = (ScorePair) o;
+
+        if (getScoreOne() != scorePair.getScoreOne()) return false;
+        return getScoreTwo() == scorePair.getScoreTwo();
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getScoreOne();
+        result = 31 * result + getScoreTwo();
+        return result;
+    }
 }

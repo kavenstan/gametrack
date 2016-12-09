@@ -22,7 +22,7 @@ import static reactor.bus.selector.Selectors.$;
 @Service
 public class MatchScoreService implements Consumer<Event<Game>>   {
 
-    private EventBus bus;
+    private final EventBus bus;
 
     private static final Logger logger = LoggerFactory.getLogger(MatchScoreService.class);
 
@@ -33,7 +33,7 @@ public class MatchScoreService implements Consumer<Event<Game>>   {
 
     @PostConstruct
     public void registerListeners() {
-        bus.on($(EventType.GAME_SCORE_CHANGE), this);
+        bus.on($(EventType.GAME_STATE_CHANGE), this);
     }
 
     @Override
@@ -47,12 +47,13 @@ public class MatchScoreService implements Consumer<Event<Game>>   {
         int scoreOne = 0;
         int scoreTwo = 0;
         for (Game game : match.getGames()) {
-            Side winner = game.getWinner().get();
-            if (winner.equals(match.getScores().get(0).getSide())) {
-                scoreOne++;
-            }
-            else {
-                scoreTwo++;
+            if (game.getWinner().isPresent()) {
+                Side winner = game.getWinner().get();
+                if (winner.equals(match.getScores().get(0).getSide())) {
+                    scoreOne++;
+                } else {
+                    scoreTwo++;
+                }
             }
         }
         match.setScores(scoreOne, scoreTwo);

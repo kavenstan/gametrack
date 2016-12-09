@@ -1,4 +1,4 @@
-package io.gametrack.competition.domain.dto;
+package io.gametrack.score.domain.dto;
 
 import io.gametrack.score.ScorePair;
 

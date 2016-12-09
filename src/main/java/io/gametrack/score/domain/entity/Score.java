@@ -1,4 +1,4 @@
-package io.gametrack.competition.domain.entity;
+package io.gametrack.score.domain.entity;
 
 import io.gametrack.core.model.BaseEntity;
 import io.gametrack.player.Side;
@@ -19,7 +19,11 @@ public abstract class Score extends BaseEntity {
 
     private int score;
 
-    public Score(Side side) {
+    protected Score() {
+
+    }
+
+    protected Score(Side side) {
         this.side = side;
         this.score = 0;
     }

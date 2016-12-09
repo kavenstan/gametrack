@@ -1,6 +1,7 @@
 package io.gametrack.competition.domain.entity;
 
 import io.gametrack.player.Side;
+import io.gametrack.player.Sides;
 
 /**
  * @author Kevin Sutton
@@ -12,11 +13,11 @@ public class ContestTest {
 
     protected Side sideOne;
     protected Side sideTwo;
-
-    protected Contest contest;
+    protected Sides sides;
 
     public void setUp() {
-//        contest.setSides(sideOne, sideTwo);
+        this.sideOne = new Side();
+        this.sideTwo = new Side();
+        this.sides = new Sides(this.sideOne, this.sideTwo);
     }
-
 }

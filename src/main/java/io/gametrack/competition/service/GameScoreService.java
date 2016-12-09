@@ -2,7 +2,7 @@ package io.gametrack.competition.service;
 
 import io.gametrack.GametrackException;
 import io.gametrack.competition.domain.entity.Game;
-import io.gametrack.competition.domain.dto.ContestScoreDTO;
+import io.gametrack.score.domain.dto.ContestScoreDTO;
 import io.gametrack.competition.domain.repository.GameDAO;
 import io.gametrack.score.GameScoreModifier;
 

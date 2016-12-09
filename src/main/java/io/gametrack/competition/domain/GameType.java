@@ -10,12 +10,12 @@ public enum GameType {
     WOMENS_DOUBLES(Format.DOUBLES, GameGender.FEMALE),
     MIXED_DOUBLES(Format.DOUBLES, GameGender.MIXED);
 
-    private final GameGender gender;
     private final Format format;
+    private final GameGender gender;
 
-    GameType(GameGender gender, Format format) {
-        this.gender = gender;
+    GameType(Format format, GameGender gender) {
         this.format = format;
+        this.gender = gender;
     }
 
     public GameGender getGameGender() {

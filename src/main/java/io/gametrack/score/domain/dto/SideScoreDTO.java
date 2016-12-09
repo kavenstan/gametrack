@@ -1,4 +1,4 @@
-package io.gametrack.competition.domain.dto;
+package io.gametrack.score.domain.dto;
 
 /**
  * @author Kevin Sutton

@@ -1,5 +1,6 @@
-package io.gametrack.competition.domain.entity;
+package io.gametrack.score.domain.entity;
 
+import io.gametrack.competition.domain.entity.Match;
 import io.gametrack.player.Side;
 
 import javax.persistence.Entity;

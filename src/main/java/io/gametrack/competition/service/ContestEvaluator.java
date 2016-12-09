@@ -9,5 +9,5 @@ import java.util.Optional;
  */
 public interface ContestEvaluator {
     boolean isDraw();
-    Optional<Side> getWinner();
+    Optional<Side> winner();
 }
