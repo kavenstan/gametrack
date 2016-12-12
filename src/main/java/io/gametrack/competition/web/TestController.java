@@ -62,12 +62,13 @@ public class TestController {
     }
 
     @RequestMapping("/list")
-    public List<MatchDTO> listMatches() {
-        return matchRepository.findAll().stream().map(MatchDTO::new).collect(Collectors.toList());
+    public List<MatchResultDTO> listMatches() {
+//        return matchRepository.findAll().stream().map(MatchDTO::new).collect(Collectors.toList());
+        return matchRepository.findAll().stream().map(MatchResultDTO::new).collect(Collectors.toList());
     }
 
     @RequestMapping("/create")
-    public String create() {
+    public String create() throws InterruptedException {
         PlayerCreator playerCreator = new PlayerCreator();
 
         for (int i = 0; i < 10; i++) {
@@ -101,6 +102,7 @@ public class TestController {
                     ScorePair gameScorePair = new ScorePair(game.getScorePair().getScoreOne() + 1, game.getScorePair().getScoreTwo());
                     gameScoreModifier.modifyScore(game, gameScorePair);
                 }
+                Thread.sleep(1000);
             }
 
         }

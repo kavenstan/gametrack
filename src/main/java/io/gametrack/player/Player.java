@@ -17,6 +17,9 @@ public class Player extends BaseEntity{
 
     private Gender gender;
 
+    protected Player() {
+    }
+
     public Player(String givenName, String familyName) {
         this.givenName = givenName;
         this.familyName = familyName;

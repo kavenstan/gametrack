@@ -2,8 +2,11 @@ package io.gametrack.competition.service;
 
 import io.gametrack.competition.domain.entity.Game;
 import io.gametrack.competition.domain.entity.Match;
+import io.gametrack.competition.domain.repository.MatchRepository;
 import io.gametrack.core.EventType;
 import io.gametrack.player.Side;
+import io.gametrack.score.MatchScoreModifier;
+import io.gametrack.score.ScorePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +26,16 @@ import static reactor.bus.selector.Selectors.$;
 public class MatchScoreService implements Consumer<Event<Game>>   {
 
     private final EventBus bus;
+    private final MatchRepository matchRepository;
+    private final MatchScoreModifier matchScoreModifier;
 
     private static final Logger logger = LoggerFactory.getLogger(MatchScoreService.class);
 
     @Autowired
-    public MatchScoreService(EventBus bus) {
+    public MatchScoreService(EventBus bus, MatchRepository matchRepository, MatchScoreModifier matchScoreModifier) {
         this.bus = bus;
+        this.matchRepository = matchRepository;
+        this.matchScoreModifier = matchScoreModifier;
     }
 
     @PostConstruct
@@ -39,10 +46,15 @@ public class MatchScoreService implements Consumer<Event<Game>>   {
     @Override
     public void accept(Event<Game> ev) {
         Game game = ev.getData();
-        recalculateMatchScore(game.getMatch());
+        updateMatchScore(game);
     }
 
-    public void recalculateMatchScore(Match match) {
+    private void updateMatchScore(Game game) {
+        ScorePair scorePair = calculateMatchScore(game.getMatch());
+        matchScoreModifier.modifyScore(game.getMatch(), scorePair);
+    }
+
+    public ScorePair calculateMatchScore(Match match) {
         logger.info("Recalculating match score");
         int scoreOne = 0;
         int scoreTwo = 0;
@@ -56,7 +68,7 @@ public class MatchScoreService implements Consumer<Event<Game>>   {
                 }
             }
         }
-        match.setScores(scoreOne, scoreTwo);
+        return new ScorePair(scoreOne, scoreTwo);
     }
 
 }

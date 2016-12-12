@@ -19,6 +19,8 @@ public class MatchScore extends Score {
     @JoinColumn(name="id_match")
     private Match match;
 
+    protected MatchScore() {}
+
     public MatchScore(Side side) {
         super(side);
     }

@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,11 +39,19 @@ public class Match extends Contest implements ScoreLister {
     @Enumerated(EnumType.STRING)
     private GameType gameType;
 
+    protected Match() { }
+
     protected Match(GameType gameType, ScoreSystemType scoreSystemType) {
         super();
         this.scoreSystemType = scoreSystemType;
         this.gameType = gameType;
         this.games = new ArrayList<>();
+    }
+
+    private void addScore(Side side) {
+        MatchScore matchScore = new MatchScore(side);
+        matchScore.setMatch(this);
+        this.scores.add(matchScore);
     }
 
     public List<Game> getGames() {
@@ -86,10 +93,9 @@ public class Match extends Contest implements ScoreLister {
 
             Match match = new Match(gameType, scoreSystemType);
 
-            match.scores = Arrays.asList(
-                    new MatchScore(sides != null ? sides.getSideOne() : null),
-                    new MatchScore(sides != null ? sides.getSideTwo() : null)
-            );
+            match.scores = new ArrayList<>();
+            match.addScore(sides.getSideOne());
+            match.addScore(sides.getSideTwo());
 
             match.setHomeSide(this.homeSide);
 

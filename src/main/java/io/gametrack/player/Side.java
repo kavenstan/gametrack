@@ -44,6 +44,10 @@ public class Side extends BaseEntity {
                 : Optional.empty();
     }
 
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
     public Date getCreatedOn() {
         return createdOn;
     }

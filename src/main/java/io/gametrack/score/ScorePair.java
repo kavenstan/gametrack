@@ -38,4 +38,9 @@ public class ScorePair {
         result = 31 * result + getScoreTwo();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return scoreOne + "-" + scoreTwo;
+    }
 }

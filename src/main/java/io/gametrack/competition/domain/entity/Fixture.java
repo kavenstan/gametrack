@@ -23,7 +23,7 @@ public class Fixture extends Contest {
     @OneToMany(mappedBy = "fixture", fetch = FetchType.LAZY)
     private List<Match> matches;
 
-    public Fixture() {
+    protected Fixture() {
         super();
         this.matches = new ArrayList<>();
     }
